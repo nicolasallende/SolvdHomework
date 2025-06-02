@@ -140,7 +140,7 @@ function mult(num1, num2){
     return result
 }
 
-String.prototype.plus = function(other) {
+String.plus = function(other) {
     return add(this, other)
 };
 
