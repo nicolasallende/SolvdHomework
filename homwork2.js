@@ -41,9 +41,23 @@ function convertToNumber(value){
     throw new Error(`Can\'t convert value of type ${ typeof value}, to number.`);
 }
 
+//i don t consider yet bigints and could make alittle better the bool conversion
 function coerceToType(value, type){
     switch(type){
-        case "string"
+        case "string":
+            return stringifyValue(value);
+
+        //maybe should include bigint
+        case "number":
+            return convertToNumber(value);
+
+            //could be better
+        case "boolean":
+            return Boolean(value)
+
+
+        default:
+            throw new Error(`Unsuported type: ${type}`)
     }
 
 }
@@ -51,10 +65,11 @@ function coerceToType(value, type){
 module.exports ={
     invertBoolean: invertBoolean,
     stringifyValue: stringifyValue,
-    convertToNumber: convertToNumber
+    convertToNumber: convertToNumber,
+    coerceToType: coerceToType
 };
 
-/*
+
 var aux2
 var aux = 1
 var value = { x: [1, { y: true }] }
@@ -63,4 +78,3 @@ console.log(stringifyValue(value))
 console.log(stringifyValue(aux))
 console.log(stringifyValue(aux2))
 console.log(convertToNumber(aux))
-*/
