@@ -5,19 +5,22 @@ function improveBool(value){
         const aux = value.trim().toLowerCase();
         if (["true", "yes", "1"].includes(aux)) return true;
         if (["false", "no", "0"].includes(aux)) return false;
+        //if we reach this part we shouldnt convert the string to bool
+        throw new Error(`Can\'t convert string: ${value}, to boolean.`);
     }
+    //otherway this work as any other bool convertion
     return Boolean(value);
 }
 
-//this was optional, only to be used in convert to number, 
+//this was optional, only to be used in convertToNumber, 
 //has restrictions to avoid precition loss 
 function convertBigintToNumber(value){
-    if((Number.MIN_SAFE_INTEGER < value) && (Number.MAX_SAFE_INTEGER > value)){
-        return Number(value);
+    if((Number.MIN_SAFE_INTEGER > value) || (Number.MAX_SAFE_INTEGER < value)){
+        throw new Error(`Number too big to be converted`);
     }
-    throw new Error(`Number too big to be converted`);
+    return Number(value);
+    
 }
-
 
 function invertBoolean(value){
     if (typeof value !== "boolean"){
@@ -40,7 +43,7 @@ function convertToNumber(value){
     }
 
     if(typeof value === "boolean"){
-        return value ? 1 : 0
+        return value ? 1 : 0;
     }
     
     //for a string we check if its a floating number and convert accordingly
@@ -63,29 +66,25 @@ function convertToNumber(value){
     throw new Error(`Can\'t convert value of type ${ typeof value}, to number.`);
 }
 
-//i don t consider yet bigints 
 function coerceToType(value, type){
     switch(type){
         case "string":
             return stringifyValue(value);
 
-        //maybe should include bigint
         case "number":
             return convertToNumber(value);
 
         case "boolean":
-            return improveBool(value)
+            return improveBool(value);
 
 
         default:
-            throw new Error(`Unsuported type: ${type}`)
+            throw new Error(`Unsuported type: ${type}`);
     }
 
 }
 
-//TBD
-//function addValues(valu1, value2){}
-//function convertToBoolean(value){}
+function addValues(valu1, value2){}
 
 
 module.exports ={
@@ -96,11 +95,6 @@ module.exports ={
 };
 
 
-var aux2
-var aux = 1
-var value = { x: [1, { y: true }] }
-//console.log(invertBoolean(aux))
-console.log(stringifyValue(value))
-console.log(stringifyValue(aux))
-console.log(stringifyValue(aux2))
-console.log(convertToNumber(aux))
+//var aux2
+//console.log(coerceToType("1", "boolean"))
+
