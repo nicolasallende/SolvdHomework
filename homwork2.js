@@ -9,6 +9,16 @@ function improveBool(value){
     return Boolean(value);
 }
 
+//this was optional, only to be used in convert to number, 
+//has restrictions to avoid precition loss 
+function convertBigintToNumber(value){
+    if((Number.MIN_SAFE_INTEGER < value) && (Number.MAX_SAFE_INTEGER > value)){
+        return Number(value);
+    }
+    throw new Error(`Number too big to be converted`);
+}
+
+
 function invertBoolean(value){
     if (typeof value !== "boolean"){
         throw new TypeError('The value is not a boolean');
@@ -23,9 +33,8 @@ function stringifyValue(value){
     return String(value)
 }
 
-//I dont consider yet bigints
 function convertToNumber(value){
-    //nothing to do
+    
     if(typeof value === "number"){
         return value;
     }
@@ -42,10 +51,13 @@ function convertToNumber(value){
         return num;
     }
     
-
     if(typeof value === "object" && value !== null){
         const num = Number(value);
         if(!isNaN(num)) return num;
+    }
+
+    if(typeof value === "bigint"){
+        return convertBigintToNumber(value)
     }
 
     throw new Error(`Can\'t convert value of type ${ typeof value}, to number.`);
