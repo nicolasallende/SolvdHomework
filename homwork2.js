@@ -1,9 +1,19 @@
+//this was optional, a minimal improvement used for the coercion to bool  
+function improveBool(value){
+    if (typeof value === "string") {
+        //we remove te extra spaces at the beginning and at the end, and turn everything to lowercase
+        const aux = value.trim().toLowerCase();
+        if (["true", "yes", "1"].includes(aux)) return true;
+        if (["false", "no", "0"].includes(aux)) return false;
+    }
+    return Boolean(value);
+}
 
-function invertBoolean(bool){
-    if (typeof bool !== "boolean"){
+function invertBoolean(value){
+    if (typeof value !== "boolean"){
         throw new TypeError('The value is not a boolean');
     }
-    return !bool
+    return !value
 }
 
 function stringifyValue(value){
@@ -41,7 +51,7 @@ function convertToNumber(value){
     throw new Error(`Can\'t convert value of type ${ typeof value}, to number.`);
 }
 
-//i don t consider yet bigints and could make alittle better the bool conversion
+//i don t consider yet bigints 
 function coerceToType(value, type){
     switch(type){
         case "string":
@@ -51,9 +61,8 @@ function coerceToType(value, type){
         case "number":
             return convertToNumber(value);
 
-            //could be better
         case "boolean":
-            return Boolean(value)
+            return improveBool(value)
 
 
         default:
@@ -61,6 +70,11 @@ function coerceToType(value, type){
     }
 
 }
+
+//TBD
+//function addValues(valu1, value2){}
+//function convertToBoolean(value){}
+
 
 module.exports ={
     invertBoolean: invertBoolean,
