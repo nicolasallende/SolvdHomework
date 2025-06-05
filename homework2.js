@@ -135,6 +135,3 @@ module.exports ={
 };
 
 
-//var aux2
-//console.log(coerceToType("1", "boolean"))
-
