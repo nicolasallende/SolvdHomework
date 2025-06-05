@@ -131,7 +131,8 @@ module.exports ={
     stringifyValue,
     convertToNumber,
     coerceToType,
-    addValues
+    addValues,
+    convertBigintToNumber
 };
 
 
