@@ -37,10 +37,43 @@ function filterUniqueWords(text) {
 
 //--------------------3-------------------------
 
+/*
+I consider that student object will have a format similar to
+
+const student = {
+    name: "name",
+    grades: [10, 5, 9], 
+} ;
+*/
+//
+
+const getGrades = student => student.grades; // gets grades array from a student
+const getName = student => student.name; // get student name
+
+const add = arr => arr.reduce((a, b) => a + b, 0); // add all the grades from a student 
+const average = arr => add(arr) / arr.length; // average value
+const getAverage = student => average(getGrades(student)); 
+
+
+const studentsWithAverage = student => ({
+    name: getName(student),
+    average: getAverage(student)
+});
+
+const getAverageGrade = students => students.map(studentsWithAverage);
 
 
 
 
+
+//-----------------------Basic test-----------------------
+const students = [
+    { name: "Alice", grades: [90, 80, 100] },
+    { name: "Bob", grades: [70, 75, 80] }
+    ];
+    
+console.log(getAverageGrade(students)); 
+console.log(students)
 
 const person = {
     firstName: "John",
@@ -53,4 +86,4 @@ const fullname = getFullName(person);
 console.log(fullname)
 
 
-console.log(filterUniqueWords("hoal jaja, ASFAS, ,."));
+console.log(filterUniqueWords("hoal jaja, ASFAS, ,. Hoal"));
