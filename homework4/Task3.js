@@ -13,9 +13,7 @@ const bankAccount = {
       }
     },
   
-    get formattedBalance() {
-      return `$${this._balance}`;
-    },
+    get formattedBalance() {return `$${this._balance}`},
   
     transfer(targetAccount, amount) {
       if (typeof amount !== 'number' || amount <= 0) {
@@ -37,3 +35,15 @@ const bankAccount = {
       targetAccount.balance += amount;
     }
   };
+
+
+//-----------------Test ---------------------------------
+Mybankaccount = Object.create(bankAccount);
+anotherAccount = Object.create(bankAccount);
+
+
+console.log(`Main account ${Mybankaccount.formattedBalance}`);      
+console.log(`Second account for testing the trasfer ${anotherAccount.formattedBalance}`);
+Mybankaccount.transfer(anotherAccount, 300);
+console.log(`Main account ${Mybankaccount.formattedBalance}`);      
+console.log(`Second account for testing the trasfer ${anotherAccount.formattedBalance}`);
