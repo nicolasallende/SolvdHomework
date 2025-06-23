@@ -36,10 +36,10 @@ Object.defineProperty(person, 'address', {
     configurable: false    
   });
   
-
-
+//export for task 4 and 5 
+module.exports = { person };
 /*
----Basic test for task 1-----
+//---Basic test for task 1-----
 console.log("Before update:", person);
 person.updateInfo({ firstName: "Jane", age: 32 }); 
 console.log("After update attempt:", person);
