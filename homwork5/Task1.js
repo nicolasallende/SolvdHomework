@@ -8,8 +8,8 @@ function customFilterUnique(arr, callback) {
     });
 };
 
-//simple test--------------------------------------
-/*
+//Part 2 Use the customFilterUnique function to filter an array of objects based on a specific property and return only unique objects.
+
 const users = [
     { id: 1, name: "Alice", email: "asdada@gma.com" },
     { id: 2, name: "Bob", email: "someting@gmail.com" },
@@ -21,4 +21,3 @@ const uniqueById = customFilterUnique(users, user => user.id);
 console.log(uniqueById);
 const uniqueById2 = customFilterUnique(users, user => user.email);
 console.log(uniqueById2);
-*/
