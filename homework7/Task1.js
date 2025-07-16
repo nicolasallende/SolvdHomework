@@ -1,5 +1,5 @@
 function promiseAll(arr){
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const result = [];
 
         if(arr.length === 0) return resolve(result);
