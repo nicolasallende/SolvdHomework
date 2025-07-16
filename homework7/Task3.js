@@ -4,7 +4,7 @@ function chainPromises(funcArr){
     }, Promise.resolve());//this is just to kick start the chain
 }
 
-
+//for basic test ,--------------------------
 function asyncFunction1() {
     return Promise.resolve("Result from asyncFunction1");
   }
