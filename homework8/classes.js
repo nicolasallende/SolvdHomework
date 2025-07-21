@@ -20,7 +20,29 @@ class Book {
     return `${this.title} by ${this.author} - $${this.price}`;
   };
 }
-  
+
+class FictionBook extends Book {
+  constructor(title, author, isbn, price, genre) {
+    super(title, author, isbn, price);
+    this.genre = genre;
+  }
+
+  getInfo() {
+    return `${super.getInfo()} [Fiction: ${this.genre}]`;
+  }
+}
+
+class NonFictionBook extends Book {
+  constructor(title, author, isbn, price, subject) {
+    super(title, author, isbn, price);
+    this.subject = subject;
+  }
+
+  getInfo() {
+    return `${super.getInfo()} [Non-Fiction: ${this.subject}]`;
+  }
+}
+
 
 class User {
   constructor(name, email, userId) {
@@ -106,4 +128,6 @@ Total: $${this.totalPrice.toFixed(2)}
 }
 
 
-module.exports = { Book, User, Cart, Order };
+
+
+module.exports = { Book, User, Cart, Order, FictionBook, NonFictionBook };
