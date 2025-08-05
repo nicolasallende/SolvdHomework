@@ -103,6 +103,21 @@ class TreeNode {
           }
         }
     }
+
+    
+    search(value) {
+        let current = this.root;
+    
+        while (current) {
+          if (value === current.value) return true;
+          current = value < current.value ? current.left : current.right;
+        }
+    
+        return false;
+    }
+
+
+
 }
   
   class Graph {
