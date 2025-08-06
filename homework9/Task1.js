@@ -71,7 +71,7 @@ class TreeNode {
 }
 
 
-  class BinaryTree {
+class BinaryTree {
     constructor(){
         this.root = null
     }
@@ -104,7 +104,7 @@ class TreeNode {
         }
     }
 
-    
+
     search(value) {
         let current = this.root;
     
@@ -116,14 +116,163 @@ class TreeNode {
         return false;
     }
 
-
-
+    inOrder(node = this.root, result = []) {
+        if (node) {
+          this.inOrder(node.left, result);
+          result.push(node.value);
+          this.inOrder(node.right, result);
+        }
+        return result;
+    }
+    
+    preOrder(node = this.root, result = []) {
+        if (node) {
+          result.push(node.value);
+          this.preOrder(node.left, result);
+          this.preOrder(node.right, result);
+        }
+        return result;
+    }
+    
+    postOrder(node = this.root, result = []) {
+        if (node) {
+          this.postOrder(node.left, result);
+          this.postOrder(node.right, result);
+          result.push(node.value);
+        }
+        return result;
+    }
 }
-  
-  class Graph {
-    // Implement methods for adding vertices, edges, DFS, BFS...
+
+//Class used for the nodes of the graph
+class Node {
+    constructor(vertexName) {
+      this.value = vertexName;
+      this.neighbors = new Set(); 
+    }
   }
   
-  class LinkedList {
-    // Implement methods for inserting, deleting, searching...
+class Graph {
+    constructor() {
+        this.nodes = new Map(); 
+    }
+
+    addVertex(vertexName) {
+        if (!this.nodes.has(vertexName)) {
+          this.nodes.set(vertexName, new Node(vertexName));
+        }
+    }
+      
+    addEdge(vertexName1, vertexName2) {
+        this.addVertex(vertexName1);
+        this.addVertex(vertexName2);
+    
+        const node1 = this.nodes.get(vertexName1);
+        const node2 = this.nodes.get(vertexName2);
+    
+        node1.neighbors.add(node2);
+        node2.neighbors.add(node1); 
+    }
+
+
+    dfs(initNode) {
+        const startNode = this.nodes.get(initNode);
+        const visited = new Set();
+        const result = [];
+    
+        const dfsRecursive = (node) => {
+          if (!node || visited.has(node)) return;
+    
+          visited.add(node);
+          result.push(node.value);
+    
+          for (const neighbor of node.neighbors) {
+            dfsRecursive(neighbor);
+          }
+        };
+    
+        dfsRecursive(startNode);
+        return result;
+    }
+
+    bfs(initNode) {
+        const startNode = this.nodes.get(initNode);
+        const visited = new Set();
+        const result = [];
+        const queue = [startNode];
+    
+        visited.add(startNode);
+    
+        while (queue.length > 0) {
+          const current = queue.shift();
+          result.push(current.value);
+    
+          for (const neighbor of current.neighbors) {
+            if (!visited.has(neighbor)) {
+              visited.add(neighbor);
+              queue.push(neighbor);
+            };
+          };
+        };
+    
+        return result;
+    };
   }
+  
+//Class used for the nodes of the linked list
+class LinkedListNode {
+    constructor(value) {
+      this.value = value;
+      this.next = null;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+
+
+    insert(value) {
+        const newNode = new LinkedListNode(value);
+    
+        if (!this.head) {
+          this.head = newNode;
+          return;
+        }
+    
+        let current = this.head;
+        while (current.next) {
+          current = current.next;
+        }
+        current.next = newNode;
+    }
+
+
+    delete(value) {
+        if (!this.head) return;
+    
+        if (this.head.value === value) {
+          this.head = this.head.next;
+          return;
+        }
+    
+        let current = this.head;
+        while (current.next && current.next.value !== value) {
+          current = current.next;
+        };
+    
+        if (current.next && current.next.value === value) {
+          current.next = current.next.next;
+        };
+    }
+
+    search(value) {
+        let current = this.head;
+        while (current) {
+          if (current.value === value) return true;
+          current = current.next;
+        }
+        return false;
+    }
+}
