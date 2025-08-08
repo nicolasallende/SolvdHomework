@@ -276,3 +276,90 @@ class LinkedList {
         return false;
     }
 }
+
+
+//--------------------------------------------PART 2---------------------
+
+class MinMaxStack extends Stack {
+  #minStack = [];
+  #maxStack = [];
+
+  push(element) {
+      super.push(element); 
+
+
+      if (this.#minStack.length === 0 || element < this.getMin()) {
+          this.#minStack.push(element);
+      } else {
+          this.#minStack.push(this.getMin());
+      };
+
+
+      if (this.#maxStack.length === 0 || element > this.getMax()) {
+          this.#maxStack.push(element);
+      } else {
+          this.#maxStack.push(this.getMax());
+      };
+  };
+
+  pop() {
+      if (this.size() === 0) {
+          throw new Error("Stack is empty");
+      }
+      this.#minStack.pop();
+      this.#maxStack.pop();
+      return super.pop();
+  };
+
+  getMin() {
+      if (this.#minStack.length === 0) {
+          throw new Error("Stack is empty");
+      }
+      return this.#minStack[this.#minStack.length - 1];
+  };
+
+  getMax() {
+      if (this.#maxStack.length === 0) {
+          throw new Error("Stack is empty");
+      }
+      return this.#maxStack[this.#maxStack.length - 1];
+  };
+
+  clear() {
+      super.clear();
+      this.#minStack = [];
+      this.#maxStack = [];
+  };
+}
+
+
+function isBinaryTree(node, min = -Infinity, max = Infinity) {
+  if (!node) return true;
+
+  if (node.value <= min || node.value > max) return false;
+
+  return (isBST(node.left, min, node.value) && isBST(node.right, node.value, max));
+}
+
+//Breadth-First Search (BFS).
+function bfsShortestPath(graph, start, goal) {
+  const queue = new Queue();
+  queue.enqueue([start, [start]]); 
+  const visited = new Set([start]);
+
+  while (queue.size() > 0) {
+      const [node, path] = queue.dequeue();
+      if (node === goal) {
+          return path;
+      }
+      for (const neighbor of graph[node] || []) {
+          if (!visited.has(neighbor)) {
+              visited.add(neighbor);
+              queue.enqueue([neighbor, [...path, neighbor]]);
+          }
+      }
+  }
+  return null; 
+}
+
+//Dijkstra
