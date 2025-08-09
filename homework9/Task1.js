@@ -163,16 +163,18 @@ class Graph {
         }
     }
       
-    addEdge(vertexName1, vertexName2) {
-        this.addVertex(vertexName1);
-        this.addVertex(vertexName2);
-    
-        const node1 = this.nodes.get(vertexName1);
-        const node2 = this.nodes.get(vertexName2);
-    
-        node1.neighbors.add(node2);
-        node2.neighbors.add(node1); 
-    }
+    addEdge(vertexName1, vertexName2, weight = 1) {
+      this.addVertex(vertexName1);
+      this.addVertex(vertexName2);
+
+      const node1 = this.nodes.get(vertexName1);
+      const node2 = this.nodes.get(vertexName2);
+
+
+      node1.neighbors.add({ node: node2, weight });
+      node2.neighbors.add({ node: node1, weight }); 
+  }
+
 
 
     dfs(initNode) {
@@ -339,27 +341,23 @@ function isBinaryTree(node, min = -Infinity, max = Infinity) {
   if (node.value <= min || node.value > max) return false;
 
   return (isBST(node.left, min, node.value) && isBST(node.right, node.value, max));
-}
+};
 
-//Breadth-First Search (BFS).
-function bfsShortestPath(graph, start, goal) {
-  const queue = new Queue();
-  queue.enqueue([start, [start]]); 
-  const visited = new Set([start]);
+//I need to redo the graph to also consider weighted edges
+//bfs and dijkstra
 
-  while (queue.size() > 0) {
-      const [node, path] = queue.dequeue();
-      if (node === goal) {
-          return path;
-      }
-      for (const neighbor of graph[node] || []) {
-          if (!visited.has(neighbor)) {
-              visited.add(neighbor);
-              queue.enqueue([neighbor, [...path, neighbor]]);
-          }
-      }
-  }
-  return null; 
-}
+// Floyd's Cycle Detection Algorithm (Tortoise and Hare algorithm)
+function hasCycle(head) {
+  let slow = head;
+  let fast = head;
 
-//Dijkstra
+  while (fast && fast.next) {
+      slow = slow.next;         
+      fast = fast.next.next;    
+
+      if (slow === fast) {
+          return true; 
+      };
+  };
+  return false;
+};
