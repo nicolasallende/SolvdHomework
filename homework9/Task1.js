@@ -148,78 +148,82 @@ class BinaryTree {
 class Node {
     constructor(vertexName) {
       this.value = vertexName;
-      this.neighbors = new Set(); 
+      this.edges = new Map(); 
     }
   }
   
 class Graph {
-    constructor() {
-        this.nodes = new Map(); 
-    }
-
-    addVertex(vertexName) {
-        if (!this.nodes.has(vertexName)) {
-          this.nodes.set(vertexName, new Node(vertexName));
-        }
-    }
-      
-    addEdge(vertexName1, vertexName2, weight = 1) {
-      this.addVertex(vertexName1);
-      this.addVertex(vertexName2);
-
-      const node1 = this.nodes.get(vertexName1);
-      const node2 = this.nodes.get(vertexName2);
-
-
-      node1.neighbors.add({ node: node2, weight });
-      node2.neighbors.add({ node: node1, weight }); 
+  constructor(isDirected = false) {
+      this.nodes = new Map();
+      this.isDirected = isDirected;
   }
 
+  addVertex(vertexName) {
+      if (!this.nodes.has(vertexName)) {
+        this.nodes.set(vertexName, new Node(vertexName));
+      }
+  }
+      
+  addEdge(fromVertex1, toVertex2, weight = 1) {
+    //create the vertex if they dont exist maybe do them throw error later
+    if (!this.nodes.has(fromVertex1)) this.addVertex(fromVertex1);
+    if (!this.nodes.has(toVertex2)) this.addVertex(toVertex2);
+
+    const fromNode1 = this.nodes.get(fromVertex1);
+    const toNode2 = this.nodes.get(toVertex2);
+    fromNode1.edges.set(toNode2, weight);
+
+    if (!this.isDirected) {
+      toNode2.edges.set(fromNode1, weight);
+    };
+  };
 
 
-    dfs(initNode) {
-        const startNode = this.nodes.get(initNode);
-        const visited = new Set();
-        const result = [];
-    
-        const dfsRecursive = (node) => {
-          if (!node || visited.has(node)) return;
-    
-          visited.add(node);
-          result.push(node.value);
-    
-          for (const neighbor of node.neighbors) {
-            dfsRecursive(neighbor);
-          }
-        };
-    
-        dfsRecursive(startNode);
-        return result;
-    }
 
-    bfs(initNode) {
-        const startNode = this.nodes.get(initNode);
-        const visited = new Set();
-        const result = [];
-        const queue = [startNode];
+  dfs(initNode) {
+      const startNode = this.nodes.get(initNode);
+      const visited = new Set();
+      const result = [];
     
-        visited.add(startNode);
+      const dfsRecursive = (node) => {
+        if (!node || visited.has(node)) return;
     
-        while (queue.length > 0) {
-          const current = queue.shift();
-          result.push(current.value);
+        visited.add(node);
+        result.push(node.value);
     
-          for (const neighbor of current.neighbors) {
-            if (!visited.has(neighbor)) {
-              visited.add(neighbor);
-              queue.push(neighbor);
-            };
+        for (let neighbor of node.edges.keys()) {
+          dfsRecursive(neighbor);
+        }
+      };
+    
+      dfsRecursive(startNode);
+      return result;
+  };
+
+  bfs(initNode) {
+    const result = [];
+    if (!initNode) return result;
+
+      const startNode = this.nodes.get(initNode);
+      const visited = new Set();
+        
+      const queue = [startNode];
+      visited.add(startNode);
+    
+      while (queue.length > 0) {
+        const current = queue.shift();
+        result.push(current.value);
+    
+        for (let neighbor of current.edges.keys()) {
+          if (!visited.has(neighbor)) {
+            visited.add(neighbor);
+            queue.push(neighbor);
           };
         };
-    
-        return result;
-    };
-  }
+      };
+    return result;
+  };
+};
   
 //Class used for the nodes of the linked list
 class LinkedListNode {
@@ -343,8 +347,82 @@ function isBinaryTree(node, min = -Infinity, max = Infinity) {
   return (isBST(node.left, min, node.value) && isBST(node.right, node.value, max));
 };
 
-//I need to redo the graph to also consider weighted edges
-//bfs and dijkstra
+
+//Auxiliar function to help with shortest BFS and Dijkstra
+function reconstructPath(prev, startValue, endValue) {
+  const path = [];
+  let current = this.nodes.get(endValue);
+  if (!current) return null;
+
+  while (current) {
+      path.unshift(current.value);
+      current = prev.get(current);
+  }
+
+  return path[0] === startValue ? path : null;
+}
+
+
+function shortestPathBFS(startValue, endValue) {
+  if (!this.nodes.has(startValue) || !this.nodes.has(endValue)) return null;
+
+  const queue = [this.nodes.get(startValue)];
+  const visited = new Set([this.nodes.get(startValue)]);
+  const prev = new Map();
+
+  while (queue.length > 0) {
+      const current = queue.shift();
+      if (current.value === endValue) break;
+
+      for (let neighbor of current.edges.keys()) {
+          if (!visited.has(neighbor)) {
+              visited.add(neighbor);
+              prev.set(neighbor, current);
+              queue.push(neighbor);
+          }
+      }
+  }
+
+  return this._reconstructPath(prev, startValue, endValue);
+}
+
+
+function shortestPathDijkstra(startValue, endValue) {
+  if (!this.nodes.has(startValue) || !this.nodes.has(endValue)) return null;
+
+  const distances = new Map();
+  const prev = new Map();
+  const pq = new Set(this.nodes.values());
+
+  for (let node of pq) {
+      distances.set(node, Infinity);
+  }
+  distances.set(this.nodes.get(startValue), 0);
+
+  while (pq.size > 0) {
+      let current = null;
+      for (let node of pq) {
+          if (current === null || distances.get(node) < distances.get(current)) {
+              current = node;
+          }
+      }
+
+      pq.delete(current);
+
+      if (current.value === endValue) break;
+
+      for (let [neighbor, weight] of current.edges) {
+          let alt = distances.get(current) + weight;
+          if (alt < distances.get(neighbor)) {
+              distances.set(neighbor, alt);
+              prev.set(neighbor, current);
+          }
+      }
+  }
+
+  return this._reconstructPath(prev, startValue, endValue);
+}
+
 
 // Floyd's Cycle Detection Algorithm (Tortoise and Hare algorithm)
 function hasCycle(head) {
