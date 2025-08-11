@@ -439,3 +439,6 @@ function hasCycle(head) {
   };
   return false;
 };
+
+//i will keep adding when i advance
+module.exports = { Stack, MinMaxStack, Queue };
