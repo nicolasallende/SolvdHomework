@@ -344,7 +344,7 @@ function isBinaryTree(node, min = -Infinity, max = Infinity) {
 
   if (node.value <= min || node.value > max) return false;
 
-  return (isBST(node.left, min, node.value) && isBST(node.right, node.value, max));
+  return (isBinaryTree(node.left, min, node.value) && isBinaryTree(node.right, node.value, max));
 };
 
 
