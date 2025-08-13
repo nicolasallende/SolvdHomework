@@ -349,78 +349,78 @@ function isBinaryTree(node, min = -Infinity, max = Infinity) {
 
 
 //Auxiliar function to help with shortest BFS and Dijkstra
-function reconstructPath(prev, startValue, endValue) {
+function reconstructPath(graph, prev, startValue, endValue) {
   const path = [];
-  let current = this.nodes.get(endValue);
+  let current = graph.nodes.get(endValue);
   if (!current) return null;
 
   while (current) {
-      path.unshift(current.value);
-      current = prev.get(current);
+    path.unshift(current.value);
+    current = prev.get(current);
   }
 
   return path[0] === startValue ? path : null;
 }
 
 
-function shortestPathBFS(startValue, endValue) {
-  if (!this.nodes.has(startValue) || !this.nodes.has(endValue)) return null;
+function shortestPathBFS(graph, startValue, endValue) {
+  if (!graph.nodes.has(startValue) || !graph.nodes.has(endValue)) return null;
 
-  const queue = [this.nodes.get(startValue)];
-  const visited = new Set([this.nodes.get(startValue)]);
+  const queue = [graph.nodes.get(startValue)];
+  const visited = new Set([graph.nodes.get(startValue)]);
   const prev = new Map();
 
   while (queue.length > 0) {
-      const current = queue.shift();
-      if (current.value === endValue) break;
+    const current = queue.shift();
+    if (current.value === endValue) break;
 
-      for (let neighbor of current.edges.keys()) {
-          if (!visited.has(neighbor)) {
-              visited.add(neighbor);
-              prev.set(neighbor, current);
-              queue.push(neighbor);
-          }
+    for (let neighbor of current.edges.keys()) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        prev.set(neighbor, current);
+        queue.push(neighbor);
       }
+    }
   }
 
-  return this._reconstructPath(prev, startValue, endValue);
+  return reconstructPath(graph, prev, startValue, endValue);
 }
 
 
-function shortestPathDijkstra(startValue, endValue) {
-  if (!this.nodes.has(startValue) || !this.nodes.has(endValue)) return null;
+function shortestPathDijkstra(graph, startValue, endValue) {
+  if (!graph.nodes.has(startValue) || !graph.nodes.has(endValue)) return null;
 
   const distances = new Map();
   const prev = new Map();
-  const pq = new Set(this.nodes.values());
+  const pq = new Set(graph.nodes.values());
 
   for (let node of pq) {
-      distances.set(node, Infinity);
+    distances.set(node, Infinity);
   }
-  distances.set(this.nodes.get(startValue), 0);
+  distances.set(graph.nodes.get(startValue), 0);
 
   while (pq.size > 0) {
-      let current = null;
-      for (let node of pq) {
-          if (current === null || distances.get(node) < distances.get(current)) {
-              current = node;
-          }
+    let current = null;
+    for (let node of pq) {
+      if (current === null || distances.get(node) < distances.get(current)) {
+        current = node;
       }
+    }
 
-      pq.delete(current);
+    pq.delete(current);
 
-      if (current.value === endValue) break;
+    if (current.value === endValue) break;
 
-      for (let [neighbor, weight] of current.edges) {
-          let alt = distances.get(current) + weight;
-          if (alt < distances.get(neighbor)) {
-              distances.set(neighbor, alt);
-              prev.set(neighbor, current);
-          }
+    for (let [neighbor, weight] of current.edges) {
+      let alt = distances.get(current) + weight;
+      if (alt < distances.get(neighbor)) {
+        distances.set(neighbor, alt);
+        prev.set(neighbor, current);
       }
+    }
   }
 
-  return this._reconstructPath(prev, startValue, endValue);
+  return reconstructPath(graph, prev, startValue, endValue);
 }
 
 
@@ -441,4 +441,4 @@ function hasCycle(head) {
 };
 
 //i will keep adding when i advance
-module.exports = { Stack, MinMaxStack, Queue };
+module.exports = { Stack, MinMaxStack, Queue, BinaryTree, isBinaryTree, Graph, shortestPathBFS, shortestPathDijkstra, LinkedList, hasCycle };
