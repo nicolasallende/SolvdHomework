@@ -1,10 +1,13 @@
 class Stack {
+  // Private array to store stack elements (LIFO structure)
     #items = [];
 
+    // Adds an element to the top of the stack
     push(element){
         this.#items.push(element);
     }
 
+    // Removes and returns the top element of the stack
     pop(){
         if(this.#items.length === 0){
             throw new Error("Stack is empty"); 
@@ -12,6 +15,7 @@ class Stack {
         return this.#items.pop();
     }
 
+    // Returns the top element without removing it
     peek(){
         if(this.#items.length === 0){
             throw new Error("Stack is empty"); 
@@ -19,22 +23,27 @@ class Stack {
         return this.#items[this.#items.length - 1];
     }
 
+    // Returns the number of elements in the stack
     size(){
         return this.#items.length;
     }
 
+    // Removes all elements from the stack
     clear(){
         this.#items = [];
     }
 }
   
 class Queue {
+  // Private array to store queue elements (FIFO structure)
     #items = [];
 
+    // Adds an element at the end of the queue
     enqueue(element){
         this.#items.push(element);
     }
 
+    // Removes and returns the first element in the queue
     dequeue(){
         if(this.#items.length === 0){
             throw new Error("Stack is empty"); 
@@ -43,6 +52,7 @@ class Queue {
         return this.#items.shift();
     }
 
+    // Returns the first element without removing it
     peek(){
         if(this.#items.length === 0){
             throw new Error("Stack is empty"); 
@@ -51,10 +61,12 @@ class Queue {
         return this.#items[0];
     }
 
+    // Returns the number of elements in the queue
     size(){
         return this.#items.length;
     }
 
+    // Clears all elements from the queue
     clear(){
         this.#items = [];
     }
@@ -73,12 +85,15 @@ class TreeNode {
 
 class BinaryTree {
     constructor(){
+      // Root node of the tree
         this.root = null
     }
 
+    // Inserts a value into the binary search tree (BST)
     insert(value) {
         const newNode = new TreeNode(value);
     
+        // If tree is empty, new node becomes root
         if (!this.root) {
           this.root = newNode;
           return;
@@ -87,6 +102,7 @@ class BinaryTree {
         let current = this.root;
     
         while (true) {
+          // Go to left subtree
           if (value < current.value) {
             if (!current.left) {
               current.left = newNode;
@@ -94,7 +110,7 @@ class BinaryTree {
             }
             current = current.left;
           } else {
-            //if equal value we send it to the node on the right
+            // Equal or greater goes to right subtree
             if (!current.right) {
               current.right = newNode;
               return;
@@ -104,7 +120,7 @@ class BinaryTree {
         }
     }
 
-
+    // Searches for a value in the BST
     search(value) {
         let current = this.root;
     
@@ -116,6 +132,7 @@ class BinaryTree {
         return false;
     }
 
+    // In-order traversal (Left, Root, Right) 
     inOrder(node = this.root, result = []) {
         if (node) {
           this.inOrder(node.left, result);
@@ -125,6 +142,7 @@ class BinaryTree {
         return result;
     }
     
+    // Pre-order traversal (Root, Left, Right)
     preOrder(node = this.root, result = []) {
         if (node) {
           result.push(node.value);
@@ -134,6 +152,7 @@ class BinaryTree {
         return result;
     }
     
+    // Post-order traversal (Left, Right, Root)
     postOrder(node = this.root, result = []) {
         if (node) {
           this.postOrder(node.left, result);
@@ -154,18 +173,21 @@ class Node {
   
 class Graph {
   constructor(isDirected = false) {
+      // Map of vertexName
       this.nodes = new Map();
+      // Determines if edges are one-way
       this.isDirected = isDirected;
   }
 
+  // Adds a vertex if it does not already exist
   addVertex(vertexName) {
       if (!this.nodes.has(vertexName)) {
         this.nodes.set(vertexName, new Node(vertexName));
       }
   }
       
+  // Adds an edge between two vertices (creates vertices if missing)
   addEdge(fromVertex1, toVertex2, weight = 1) {
-    //create the vertex if they dont exist maybe do them throw error later
     if (!this.nodes.has(fromVertex1)) this.addVertex(fromVertex1);
     if (!this.nodes.has(toVertex2)) this.addVertex(toVertex2);
 
@@ -235,10 +257,11 @@ class LinkedListNode {
 
 class LinkedList {
     constructor() {
+      // First node in the list
         this.head = null;
     }
 
-
+    // Adds a new node at the end
     insert(value) {
         const newNode = new LinkedListNode(value);
     
@@ -254,7 +277,7 @@ class LinkedList {
         current.next = newNode;
     }
 
-
+    // Removes the first occurrence of a value
     delete(value) {
         if (!this.head) return;
     
@@ -273,6 +296,7 @@ class LinkedList {
         };
     }
 
+    // Searches for a value
     search(value) {
         let current = this.head;
         while (current) {
@@ -287,9 +311,12 @@ class LinkedList {
 //--------------------------------------------PART 2---------------------
 
 class MinMaxStack extends Stack {
+  // Stores minimum values at each level
   #minStack = [];
+  // Stores maximum values at each level
   #maxStack = [];
 
+  // Pushes element and updates min/max stacks
   push(element) {
       super.push(element); 
 
@@ -308,6 +335,7 @@ class MinMaxStack extends Stack {
       };
   };
 
+  // Pops element and updates min/max stacks
   pop() {
       if (this.size() === 0) {
           throw new Error("Stack is empty");
@@ -317,6 +345,7 @@ class MinMaxStack extends Stack {
       return super.pop();
   };
 
+  // Returns current minimum
   getMin() {
       if (this.#minStack.length === 0) {
           throw new Error("Stack is empty");
@@ -324,6 +353,7 @@ class MinMaxStack extends Stack {
       return this.#minStack[this.#minStack.length - 1];
   };
 
+  // Returns current maximum
   getMax() {
       if (this.#maxStack.length === 0) {
           throw new Error("Stack is empty");
@@ -331,6 +361,7 @@ class MinMaxStack extends Stack {
       return this.#maxStack[this.#maxStack.length - 1];
   };
 
+  // Clears all stacks
   clear() {
       super.clear();
       this.#minStack = [];
