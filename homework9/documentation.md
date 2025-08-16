@@ -16,11 +16,17 @@ Commonly used in:
     Depth-first search
 
 Methods
+
 Method	| Description	| Time Complexity
+
 push(element) |	Adds an element to the top. |	O(1)
+
 pop()	| Removes and returns the top element. |	O(1)
+
 peek() |	Returns the top element without removing it. |	O(1)
+
 size() |	Returns number of elements. |	O(1)
+
 clear() |	Empties the stack. |	O(1)
 
 
@@ -34,8 +40,11 @@ Useful for:
     Range queries
 
 Additional Methods
+
 Method |	Description	| Time Complexity
+
 getMin() |	Returns the current minimum. |	O(1)
+
 getMax() |	Returns the current maximum. |	O(1)
 
 Implementation note:
@@ -53,11 +62,17 @@ Commonly used for:
     Breadth-first search
 
 Methods
+
 Method |	Description	| Time Complexity
+
 enqueue(element) |	Adds to the back. |	O(1)
+
 dequeue() |	Removes from the front. |	O(n) (due to array shift)
+
 peek()	| Returns first element without removing. |	O(1)
+
 size() |	Number of elements. |	O(1)
+
 clear() |	Empties queue. |	O(1)
 
 
@@ -71,11 +86,17 @@ Used for:
     Efficient searching in Binary Search Tree (BST) form
 
 Methods
+
 Method |	Description	| Time Complexity (avg)
+
 insert(value) |	Inserts while maintaining BST property.	| O(log n)
+
 search(value) |	Checks if value exists. |	O(log n)
+
 inOrder() |	Left → Node → Right traversal. |	O(n)
-preOrder() |	Node → Left → Right traversal. |	O(n)
+
+preOrder() |	Node → Left → Right traversal. |   O(n)
+
 postOrder()	| Left → Right → Node traversal. |	O(n)
 
 
@@ -87,10 +108,15 @@ Supports both directed and undirected graphs.
 
 
 Methods
+
 Method |	Description |	Time Complexity
+
 addVertex(name) |	Adds a new node. |	O(1)
+
 addEdge(from, to, weight=1) |	Connects vertices with optional weight. |	O(1)
+
 dfs(start) |	Depth-first traversal. |	O(V+E)
+
 bfs(start) |	Breadth-first traversal. |	O(V+E)
 
 
@@ -102,9 +128,13 @@ Efficient for insertions/deletions in the middle of the list.
 
 
 Methods
+
 Method |	Description |	Time Complexity
+
 insert(value) |	Adds to end. |	O(n)
+
 delete(value) |	Removes first occurrence. |	O(n)
+
 search(value) |	Checks existence. |	O(n)
 
 
